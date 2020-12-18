@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /*********************************************
  * @Author : Mr.Wang
  * @Date : 2020-12-17 13:55:57
@@ -166,10 +168,10 @@ public class Sort {
     }
 
     /*********************************************
-     @Description: 归并排序
-     @param {int[],int,int} r,low,high
-     @return {*}
-    *********************************************/
+     * @Description: 归并排序
+     * @param {int[],int,int} r,low,high
+     * @return {*}
+     *********************************************/
     public void Merge(int[] r, int low, int mid, int high) {
         int[] s = new int[high - low + 1];
         int i, j, k;
@@ -204,7 +206,49 @@ public class Sort {
         return r;
     }
 
-    
+    /*********************************************
+     * @Description: 基数排序
+     * @param {int[]} r
+     * @return {*}
+     *********************************************/
+    public void BaseSort(int[] r) {
+        ArrayList<ArrayList<Integer>> queue1 = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            ArrayList<Integer> queue2 = new ArrayList<>();
+            queue1.add(queue2);// 创建0-9的基数，每个基数上都是一个数组
+        }
+
+        int max = r[0];// 找到最大值
+        for (int i = 0; i < r.length; i++) {
+            if (r[i] > max)
+                max = r[i];
+        }
+
+        int times = 0;// 标记最大值位数
+        while (max > 0) {
+            max /= 10;
+            times++;
+        }
+
+        for (int i = 0; i < times; i++) {
+            for (int j = 0; j < r.length; j++) {
+                int x = (int) (r[j] %  Math.pow(10, i + 1) / Math.pow(10, i));// 取某一个位数(个位、十位、百位)-->先模运算取余数，再除取商
+                ArrayList<Integer> queue3 = queue1.get(x);
+                queue3.add(r[j]);
+                queue1.set(x, queue3);
+            }
+
+            int count = 0;
+            for (int k = 0; k < 10; k++) {
+                while (queue1.get(k).size() > 0) {// 将每一个基数数组的数据按顺序更新到r中
+                    ArrayList<Integer> queue4 = queue1.get(k);
+                    r[count] = queue4.get(0);
+                    queue4.remove(0);
+                    count++;
+                }
+            }
+        }
+    }
 
     public static void main(String args[]) {
 
@@ -253,8 +297,14 @@ public class Sort {
         // System.out.print(r[i] + " ");
         // System.out.println();
 
-        sort.MergeSort(r, 0, r.length - 1);
-        System.out.print("归并排序：");
+        // sort.MergeSort(r, 0, r.length - 1);
+        // System.out.print("归并排序：");
+        // for (int i = 0; i < r.length; i++)
+        // System.out.print(r[i] + " ");
+        // System.out.println();
+
+        sort.BaseSort(r);
+        System.out.print("基数排序：");
         for (int i = 0; i < r.length; i++)
             System.out.print(r[i] + " ");
         System.out.println();
