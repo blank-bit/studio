@@ -2,7 +2,7 @@
  * @Author       : Mr.Wang
  * @Date         : 2020-12-19 16:29:38
  * @FilePath     : /README.md
- * @Description  : 文件位置
+ * @Description  : 文件路径
 -->
 # studio
 
